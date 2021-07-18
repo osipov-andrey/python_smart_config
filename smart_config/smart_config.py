@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Union
 
 from attributedict.collections import AttributeDict
 
@@ -47,11 +47,11 @@ class TrickyConfig(AttributeDict):
     #         raise RuntimeError(f"Key {key} conflicts with config-object attribute!")
     #     super().__setattr__(key, value)
 
-    def get_envs(self) -> Tuple[str]:
+    def get_envs(self) -> List[str]:
         """
         :return: ("prod", "dev", ...)
         """
-        return tuple(self.__configs.keys())
+        return list(str(key) for key in self.__configs.keys())
 
     def get_active_env(self) -> str:
         return self.__environment

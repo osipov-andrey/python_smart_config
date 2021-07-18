@@ -1,4 +1,4 @@
-from typing import Any, Callable, List, Mapping, Union
+from typing import Any, Callable, List, Union
 
 from smart_config._actions import ActionException
 
@@ -24,7 +24,7 @@ class ConfigPath:
 
 
 def run_all_actions(
-    value: str,
+    value: Union[int, str],
     dict_or_list: Union[dict, list],
     key_or_index: Union[str, int],
     actions: List[Callable],
@@ -48,11 +48,11 @@ def _is_list(obj: Any) -> bool:
 
 
 def _is_str_or_digit(obj: Any) -> bool:
-    return bool(any((isinstance(obj, str), isinstance(obj, int))))
+    return any((isinstance(obj, str), isinstance(obj, int)))
 
 
-def dict_traversal(mapping: Mapping, actions: List[Callable]) -> List[str]:
-    queue: List[Union[Mapping, List]] = [
+def dict_traversal(mapping: dict, actions: List[Callable]) -> List[str]:
+    queue: List[Union[dict, list]] = [
         mapping,
     ]
     errors = []
@@ -61,32 +61,38 @@ def dict_traversal(mapping: Mapping, actions: List[Callable]) -> List[str]:
         nonlocal queue
         nonlocal errors
 
-        # CHECK DICT
+        # CHECK DICT:
         if _is_dict(checking_value):
-            queue.append(checking_value)
+            queue.append(checking_value)  # type: ignore
+            # Type already checked
             return
 
-        # CHECK LIST
+        # CHECK LIST:
         elif _is_list(checking_value):
-            for index, _item in enumerate(checking_value):
-                # CHECK STR IN LIST
+            for index, _item in enumerate(checking_value):  # type: ignore
+                # Type already checked
+                # CHECK STR IN LIST:
                 # if not _is_str_or_digit(checking_value):
-                if not any((isinstance(_item, str), isinstance(_item, int))):
+                if not _is_str_or_digit(_item):
                     queue.append(_item)
                     continue
-                _errors: list = run_all_actions(_item, checking_value, index, actions)
+                _errors = run_all_actions(_item, checking_value, index, actions)  # type: ignore
+                # Type already checked
                 errors.extend(_errors)
             return
 
         # CHECK STR OR INT
-        nonlocal dict_or_list
-        nonlocal key_or_index
-        _errors: list = run_all_actions(checking_value, dict_or_list, key_or_index, actions)
-        errors.extend(_errors)
+        if _is_str_or_digit(checking_value):
+            _errors = run_all_actions(
+                checking_value, dict_or_list, key_or_index, actions  # type: ignore
+            )
+            # Type already checked
+            errors.extend(_errors)
 
     for dict_or_list in queue:  # type: Union[dict, list]
         if _is_dict(dict_or_list):
-            for key_or_index, value in dict_or_list.items():
+            for key_or_index, value in dict_or_list.items():  # type: ignore
+                # Type already checked
                 _check_value(value)
         elif _is_list(dict_or_list):
             for key_or_index, item in enumerate(dict_or_list):
