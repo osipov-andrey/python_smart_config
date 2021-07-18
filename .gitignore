@@ -1,0 +1,14 @@
+*.pyc
+*.pyo
+
+# py.test cache
+.pytest_cache
+cover
+.coverage
+
+*htmlcov/
+*dist/
+poetry.lock
+.python-version
+*venv
+*env
