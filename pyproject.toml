@@ -21,6 +21,7 @@ isort = "^5.9.2"
 types-requests = "^2.25.0"
 flake8-absolute-import = "^1.0"
 Faker = "^8.10.1"
+types-PyYAML = "^5.4.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

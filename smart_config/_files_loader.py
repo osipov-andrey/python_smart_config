@@ -32,17 +32,12 @@ def get_config_files(path: str) -> List[ConfigFile]:
     # abs_path: Path = Path(__file__).parent.absolute().joinpath(path)
     abs_path: Path = Path(path)
     files: List[Path] = [
-        abs_path.joinpath(f) for f in listdir(str(abs_path))
-        if isfile(str(abs_path.joinpath(f)))
+        abs_path.joinpath(f) for f in listdir(str(abs_path)) if isfile(str(abs_path.joinpath(f)))
     ]
     for f in files:  # type: Path
         file_name, format_ = f.absolute().name.split(".")
         _, env = file_name.split("_")
-        config_files.append(ConfigFile(
-            path=f,
-            environment=env,
-            format=format_
-        ))
+        config_files.append(ConfigFile(path=f, environment=env, format=format_))
     return config_files
 
 

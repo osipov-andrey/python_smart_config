@@ -1,36 +1,39 @@
-from typing import Mapping, List, Callable, Union, Optional, Any
+from typing import Any, Callable, List, Mapping, Union
 
-from smart_config_old._actions import ActionException
+from smart_config._actions import ActionException
 
 JSONTypes = Union[dict, list, str, int]
 
 
 class ConfigPath:
-
     def __init__(self, root: str):
-        self._path = [root, ]
+        self._path: List[Union[int, str]] = [
+            root,
+        ]
 
-    def join(self, path_step: Union[int, str]) -> 'ConfigPath':
+    def join(self, path_step: Union[int, str]) -> "ConfigPath":
         self._path.append(path_step)
         return self
 
     def resolve(self, config: dict) -> JSONTypes:
-        value: JSONTypes = config
+        value: Union[dict, list] = config
         for path_step in self._path:
-            value = value[path_step]
+            value = value[path_step]  # type: ignore
+            # Here we combine dicts and lists
         return value
 
 
 def run_all_actions(
-        value: str,
-        dict_or_list: Union[dict, list],
-        key_or_index: Union[str, int],
-        actions: List[Callable]
+    value: str,
+    dict_or_list: Union[dict, list],
+    key_or_index: Union[str, int],
+    actions: List[Callable],
 ) -> list:
     errors: list = []
     for action in actions:  # type: Callable
         try:
-            dict_or_list[key_or_index] = action(value)
+            dict_or_list[key_or_index] = action(value)  # type: ignore
+            # Here we combine dicts and lists
         except ActionException as err:
             errors.append(str(err))
     return errors
@@ -49,7 +52,9 @@ def _is_str_or_digit(obj: Any) -> bool:
 
 
 def dict_traversal(mapping: Mapping, actions: List[Callable]) -> List[str]:
-    queue: List[Union[Mapping, List]] = [mapping, ]
+    queue: List[Union[Mapping, List]] = [
+        mapping,
+    ]
     errors = []
 
     def _check_value(checking_value: JSONTypes) -> None:

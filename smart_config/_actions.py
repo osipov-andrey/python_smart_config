@@ -9,8 +9,8 @@ class ActionException(Exception):
 
 
 def _load_env_value(env_var_name_with_prefix: str) -> Tuple[str, str]:
-    expected_var_name = env_var_name_with_prefix.replace(DEFAULT_ENV_PLACEHOLDER_PREFIX, "")
-    value_ = getenv(expected_var_name)
+    expected_var_name: str = env_var_name_with_prefix.replace(DEFAULT_ENV_PLACEHOLDER_PREFIX, "")
+    value_: str = getenv(expected_var_name, "")
     return value_, expected_var_name
 
 

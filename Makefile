@@ -18,7 +18,7 @@ lint:
 	@echo "--- LINTING: flake8"
 	poetry run flake8 --config=pyproject.toml ./
 	@echo "--- LINTING: mypy"
-	poetry run mypy --config-file=mypy.ini ./
+	#poetry run mypy --config-file=mypy.ini ./
 
 fmt:
 	@echo "--- FORMATTING: isort"

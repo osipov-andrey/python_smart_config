@@ -1,12 +1,11 @@
 import os
-from typing import Union, Tuple, List, Optional, Dict
+from typing import Dict, List, Optional, Tuple, Union
 
 from attributedict.collections import AttributeDict
 
 from smart_config._actions import check_env_loader_action
 from smart_config._algorithms import dict_traversal
-from smart_config._files_loader import get_config_files, load_config, ConfigFile
-
+from smart_config._files_loader import ConfigFile, get_config_files, load_config
 
 JSONTypes = Union[dict, list, str, int]
 PROD_ENV = "prod"
@@ -20,11 +19,11 @@ class TrickyConfig(AttributeDict):
     """
 
     def __init__(
-            self,
-            config_dir: str,
-            *,
-            default_env: str = PROD_ENV,
-            env_variable: str = ENV_VARIABLE,
+        self,
+        config_dir: str,
+        *,
+        default_env: str = PROD_ENV,
+        env_variable: str = ENV_VARIABLE,
     ):
         super().__init__()
         self.__configs: Dict[str, AttributeDict] = {}
