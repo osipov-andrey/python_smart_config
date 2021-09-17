@@ -8,26 +8,25 @@ import yaml
 from smart_config._algorithms import ConfigPath
 from smart_config.smart_config import ConfigWithEnvironment, TrickyConfig
 
+path_to_config: Path = Path(__file__).parent.absolute().joinpath("configs")
+
 
 def test_1():
-    config = TrickyConfig("tests/configs")
+    config = TrickyConfig(str(path_to_config))
     assert config.prod
 
 
 def test_attribute_error():
-    config: TrickyConfig = TrickyConfig("tests/configs")
+    config: TrickyConfig = TrickyConfig(str(path_to_config))
     with pytest.raises(AttributeError) as err:
         assert config.foobar
         assert err.value.args == "foobar"
 
 
 def test_config_with_env():
-    config = ConfigWithEnvironment("tests/configs")
+    config = ConfigWithEnvironment(str(path_to_config))
     assert config.prod
     assert config.dev
-
-
-path_to_config: Path = Path(__file__).parent.absolute().joinpath("configs")
 
 
 @pytest.fixture
@@ -66,9 +65,7 @@ def config_file() -> Generator[Tuple[str, List[str]], None, None]:
 
 
 @pytest.fixture
-def config_file_with_env(
-    config_file: Tuple[str, List[str]]
-) -> Generator[Tuple[str, str], None, None]:
+def config_file_with_env(config_file: Tuple[str, List[str]]) -> Generator[Tuple[str, str], None, None]:
     file_name, expected_vars = config_file  # type: str, List[str]
 
     test_value: str = "TEST"
@@ -88,14 +85,14 @@ class TestConfig:
         file_name, expected_errors = config_file
 
         with pytest.raises(RuntimeError) as exc_info:
-            ConfigWithEnvironment("tests/configs")
+            ConfigWithEnvironment(str(path_to_config))
             for error in expected_errors:
                 assert error in str(exc_info)
 
     def test_fill_from_env(self, config_file_with_env: Tuple[str, str]):
         file_name, expected_value = config_file_with_env  # type: str, str
 
-        config = ConfigWithEnvironment("tests/configs")
+        config = ConfigWithEnvironment(str(path_to_config))
 
         assert config.test["f1"] == expected_value
         assert config.test["f3"]["s1"]["t1"] == expected_value

@@ -33,9 +33,7 @@ def get_config_files(
     config_files: List[ConfigFile] = []
     # abs_path: Path = Path(__file__).parent.absolute().joinpath(path)
     abs_path: Path = Path(path)
-    files: List[Path] = [
-        abs_path.joinpath(f) for f in listdir(str(abs_path)) if isfile(str(abs_path.joinpath(f)))
-    ]
+    files: List[Path] = [abs_path.joinpath(f) for f in listdir(str(abs_path)) if isfile(str(abs_path.joinpath(f)))]
     for f in files:  # type: Path
         (
             file_name,

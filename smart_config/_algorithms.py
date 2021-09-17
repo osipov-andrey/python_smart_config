@@ -1,6 +1,6 @@
-from typing import Any, Callable, List, Union
+from typing import Any, List, Union
 
-from smart_config._actions import ActionException
+from smart_config._actions import Action, ActionException
 
 JSONTypes = Union[dict, list, str, int]
 
@@ -27,12 +27,12 @@ def run_all_actions(
     value: Union[int, str],
     dict_or_list: Union[dict, list],
     key_or_index: Union[str, int],
-    actions: List[Callable],
+    actions: List[Action],
 ) -> list:
     errors: list = []
-    for action in actions:  # type: Callable
+    for action in actions:  # type: Action
         try:
-            dict_or_list[key_or_index] = action(value)  # type: ignore
+            dict_or_list[key_or_index] = action.conditionally_transform(str(value))  # type: ignore
             # Here we combine dicts and lists
         except ActionException as err:
             errors.append(str(err))
@@ -51,7 +51,7 @@ def _is_str_or_digit(obj: Any) -> bool:
     return any((isinstance(obj, str), isinstance(obj, int)))
 
 
-def dict_traversal(mapping: dict, actions: List[Callable]) -> List[str]:
+def dict_traversal(mapping: dict, actions: List[Action]) -> List[str]:
     queue: List[Union[dict, list]] = [
         mapping,
     ]
@@ -83,9 +83,7 @@ def dict_traversal(mapping: dict, actions: List[Callable]) -> List[str]:
 
         # CHECK STR OR INT
         if _is_str_or_digit(checking_value):
-            _errors = run_all_actions(
-                checking_value, dict_or_list, key_or_index, actions  # type: ignore
-            )
+            _errors = run_all_actions(checking_value, dict_or_list, key_or_index, actions)  # type: ignore
             # Type already checked
             errors.extend(_errors)
 

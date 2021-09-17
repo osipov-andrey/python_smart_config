@@ -3,7 +3,7 @@ from typing import Dict, List, Optional, Union
 
 from attributedict.collections import AttributeDict
 
-from smart_config._actions import check_env_loader_action
+from smart_config._actions import EnvLoader
 from smart_config._algorithms import dict_traversal
 from smart_config._files_loader import ConfigFile, get_config_files, load_config
 
@@ -80,7 +80,7 @@ class ConfigWithEnvironment(TrickyConfig):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        errors = dict_traversal(self, actions=[check_env_loader_action])
+        errors = dict_traversal(self, actions=[EnvLoader()])
 
         if errors:
             raise RuntimeError("Config errors:\n" + "\n".join(errors))
