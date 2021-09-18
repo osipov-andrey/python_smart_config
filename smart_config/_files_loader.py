@@ -31,14 +31,10 @@ def get_config_files(
     :return:
     """
     config_files: List[ConfigFile] = []
-    # abs_path: Path = Path(__file__).parent.absolute().joinpath(path)
     abs_path: Path = Path(path)
     files: List[Path] = [abs_path.joinpath(f) for f in listdir(str(abs_path)) if isfile(str(abs_path.joinpath(f)))]
     for f in files:  # type: Path
-        (
-            file_name,
-            format_,
-        ) = f.absolute().name.split(".")
+        file_name, format_ = f.absolute().name.split(".")
         _, env = file_name.split("_")
         config_files.append(
             ConfigFile(
@@ -50,9 +46,7 @@ def get_config_files(
     return config_files
 
 
-def load_config(
-    config_file: ConfigFile,
-) -> AttributeDict:
+def load_config(config_file: ConfigFile) -> AttributeDict:
     with open(config_file.path.absolute(), "r") as f:
         if config_file.format == FileFormats.JSON:
             config: dict = json.load(f)
