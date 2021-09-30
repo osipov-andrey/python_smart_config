@@ -1,6 +1,6 @@
 from typing import Any, List, Tuple, Union
 
-from smart_config.actions import ActionException, BaseAction
+from clever_config.actions import ActionException, BaseAction
 
 JSONTypes = Union[dict, list, str, int]
 PathList = List[Union[str, int]]

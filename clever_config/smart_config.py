@@ -3,9 +3,9 @@ from typing import Dict, List, Optional, Union
 
 from attributedict.collections import AttributeDict
 
-from smart_config._files_loader import ConfigFile, get_config_files, load_config
-from smart_config.actions import BaseAction
-from smart_config.dict_traversal import dict_traversal
+from clever_config._files_loader import ConfigFile, get_config_files, load_config
+from clever_config.actions import BaseAction
+from clever_config.dict_traversal import dict_traversal
 
 JSONTypes = Union[dict, list, str, int]
 PROD_ENV = "prod"

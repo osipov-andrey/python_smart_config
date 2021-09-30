@@ -3,9 +3,9 @@ from typing import List, Tuple
 import pytest
 import yaml
 
-from smart_config.actions import EnvLoaderAction
-from smart_config.dict_traversal import dict_traversal
-from smart_config.smart_config import TrickyConfig
+from clever_config.actions import EnvLoaderAction
+from clever_config.dict_traversal import dict_traversal
+from clever_config.smart_config import TrickyConfig
 from tests.conftest import path_to_config
 
 
