@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "smart_config"
+name = "clever_config"
 version = "0.1.0"
 description = ""
 authors = ["Andrey A. Osipov <developer.osipov@gmail.com>"]
