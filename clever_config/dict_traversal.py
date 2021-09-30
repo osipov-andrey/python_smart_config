@@ -65,10 +65,11 @@ def _run_all_actions(
     key_or_index: Union[str, int] = path[-1]
     value: Union[int, str] = dict_or_list[key_or_index]  # type: ignore
     errors: list = []
-
+    if isinstance(value, int):
+        return errors
     for action in actions:  # type: BaseAction
         try:
-            dict_or_list[key_or_index] = action.conditionally_transform(path, str(value))  # type: ignore
+            dict_or_list[key_or_index] = action.conditionally_transform(path, value)  # type: ignore
             # Here we combine dicts and lists
         except ActionException as err:
             errors.append(str(err))
