@@ -13,6 +13,10 @@ class BaseAction(abc.ABC):
             return self.transform(path_chain, value)
         return value
 
+    @staticmethod
+    def path_to_str(path_chain: List[Union[str, int]]) -> str:
+        return " -> ".join(str(el) for el in path_chain)
+
     @abc.abstractmethod
     def is_needed(self, path_chain: List[Union[str, int]], value: str) -> bool:
         pass
@@ -32,7 +36,5 @@ class EnvLoaderAction(BaseAction):
         expected_var_name: str = value.replace(self.ENV_PLACEHOLDER_PREFIX, "")
         value_: Optional[str] = getenv(expected_var_name)
         if not value_:
-            raise ActionException(
-                f"Broken ENV Variable: {expected_var_name}! Path: {' -> '.join(str(el) for el in path_chain)}"
-            )
+            raise ActionException(f"Broken ENV Variable: {expected_var_name}! Path: {self.path_to_str(path_chain)}")
         return value_
