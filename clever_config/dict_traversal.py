@@ -63,11 +63,12 @@ def _run_all_actions(
 ) -> list:
 
     key_or_index: Union[str, int] = path[-1]
-    value: Union[int, str] = dict_or_list[key_or_index]  # type: ignore
     errors: list = []
-    if isinstance(value, int):
-        return errors
+
     for action in actions:  # type: BaseAction
+        value: Union[int, str] = dict_or_list[key_or_index]  # type: ignore
+        if isinstance(value, int):
+            return errors
         try:
             dict_or_list[key_or_index] = action.conditionally_transform(path, value)  # type: ignore
             # Here we combine dicts and lists
