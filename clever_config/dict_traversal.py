@@ -8,6 +8,10 @@ CheckedCollection = Union[dict, list]
 
 
 def dict_traversal(mapping: dict, actions: List[BaseAction]) -> List[str]:
+    # map(lambda action: action.__pre_traversal_hook__(mapping), actions)
+
+    for action in actions:
+        action.__pre_traversal_hook__(mapping)
 
     queue: List[Tuple[PathList, CheckedCollection]] = [
         ([], mapping),
@@ -53,6 +57,10 @@ def dict_traversal(mapping: dict, actions: List[BaseAction]) -> List[str]:
             for key_or_index, item in enumerate(dict_or_list):
                 _check_value(_get_extended_path(path, key_or_index), item)
 
+    if not errors:
+        for action in actions:
+            action.__post_traversal_hook__(mapping)
+        # map(lambda action: action.__post_traversal_hook__(mapping), actions)
     return errors
 
 

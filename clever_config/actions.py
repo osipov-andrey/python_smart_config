@@ -25,6 +25,12 @@ class BaseAction(abc.ABC):
     def transform(self, path_chain: List[Union[str, int]], value: str) -> str:
         pass
 
+    def __pre_traversal_hook__(self, mapping: dict) -> None:
+        pass
+
+    def __post_traversal_hook__(self, mapping: dict) -> None:
+        pass
+
 
 class EnvLoaderAction(BaseAction):
     ENV_PLACEHOLDER_PREFIX = "ENV__"

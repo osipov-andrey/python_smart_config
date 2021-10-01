@@ -1,7 +1,8 @@
 [tool.poetry]
 name = "clever_config"
-version = "0.1.2"
-description = ""
+version = "0.3.0"
+description = "Tricky config with features"
+repository = "https://github.com/osipov-andrey/python_smart_config"
 authors = ["Andrey A. Osipov <developer.osipov@gmail.com>"]
 
 [tool.poetry.dependencies]
